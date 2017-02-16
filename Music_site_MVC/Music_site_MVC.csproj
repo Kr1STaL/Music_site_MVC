@@ -167,7 +167,7 @@
     <Compile Include="Models\Akord.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\Song.cs" />
-    <Compile Include="Music_MVC_Context.cs" />
+    <Compile Include="Database_EF\Music_MVC_Context.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
