@@ -6,6 +6,7 @@ using System.Data.Entity;
 using Music_site_MVC.Models;
 using System.Text;
 using HtmlAgilityPack;
+using Music_site_MVC.Database_EF;
 
 namespace Music_site_MVC
 {
@@ -24,20 +25,7 @@ namespace Music_site_MVC
     {
         protected override void Seed(Music_MVC_Context db)
         {
-            System.Net.WebClient web = new System.Net.WebClient();
-            web.Encoding = Encoding.UTF8;
 
-
-            List<string> Artists_web_strings = new List<string>();
-            List<string> Pages_web_strings = new List<string>();
-            List<string> Songs_web_strings = new List<string>();
-
-            for (int i = 1; i <= 10; i++)
-            {
-                string str = web.DownloadString("http://amdm.ru/chords/page" + i + "/");
-                str = HttpUtility.HtmlDecode(str);
-                Pages_web_strings.Add(str);
-            }
         }
     }
 
