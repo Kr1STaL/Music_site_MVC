@@ -8,6 +8,8 @@ namespace Music_site_MVC.Controllers
 {
     public class HomeController : Controller
     {
+        Music_MVC_Context db = new Music_MVC_Context();
+
         public ActionResult Index()
         {
             return View();
@@ -23,8 +25,7 @@ namespace Music_site_MVC.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-
-            return View();
+            return View(db.Artists);
         }
     }
 }

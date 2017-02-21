@@ -124,32 +124,44 @@ namespace Music_site_MVC.Database_EF
 
             foreach (string html_page in songs_pages)
             {
-                Thread.Sleep(500);
-                string str = web.DownloadString(html_page);
-                HtmlDocument doc = new HtmlDocument();
+                
+                Thread.Sleep(850);
 
-                doc.LoadHtml(str);
-
-                HtmlNode name_node = doc.DocumentNode.SelectSingleNode("//span[@itemprop='name']");
-                HtmlNode text_node = doc.DocumentNode.SelectSingleNode("//pre[@itemprop='chordsBlock']");
-                HtmlNodeCollection akkords_node = doc.DocumentNode.SelectNodes("//div[@id='song_chords']/img");
-
-                Song song = new Song();
-                List<Akord> akkord_list = new List<Akord>();
-
-                song.SongName = name_node.InnerText;
-                song.SongText = text_node.InnerText;
-
-                foreach (HtmlNode note in akkords_node)
+                try
                 {
-                    Akord akkord = new Akord();
-                    akkord.Name = note.Attributes["alt"].Value;
-                    akkord.Image = note.Attributes["src"].Value.Insert(0, "http:");
-                    akkord_list.Add(akkord);
-                }
+                    string str = web.DownloadString(html_page);
+                    HtmlDocument doc = new HtmlDocument();
+                    doc.LoadHtml(str);
 
-                song.Akords = akkord_list;
-                artist_songs.Add(song);
+                    HtmlNode name_node = doc.DocumentNode.SelectSingleNode("//span[@itemprop='name']");
+                    HtmlNode text_node = doc.DocumentNode.SelectSingleNode("//pre[@itemprop='chordsBlock']");
+                    HtmlNodeCollection akkords_node = doc.DocumentNode.SelectNodes("//div[@id='song_chords']/img");
+
+                    if (akkords_node != null && name_node != null && text_node != null)
+                    {
+                        Song song = new Song();
+                        List<Akord> akkord_list = new List<Akord>();
+
+                        song.SongName = name_node.InnerText;
+                        song.SongText = text_node.InnerText;
+
+                        foreach (HtmlNode note in akkords_node)
+                        {
+                            Akord akkord = new Akord();
+                            akkord.Name = note.Attributes["alt"].Value;
+                            akkord.Image = note.Attributes["src"].Value.Insert(0, "http:");
+                            akkord_list.Add(akkord);
+                        }
+
+                        song.Akords = akkord_list;
+                        artist_songs.Add(song);
+                    }
+                }
+                catch (Exception)
+                {
+                    Thread.Sleep(1000);
+                    continue;
+                }
             }
             artist.Songs = artist_songs;
             return artist;
