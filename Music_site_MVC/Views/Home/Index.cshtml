@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Music_site_MVC.Models.Artist>
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -12,10 +13,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var art in ViewBag.Artists)
+            @foreach (Music_site_MVC.Models.Artist art in Model)
             {
                 <tr>
-                    <td>@art.Name</td>
+                    <td>@Html.ActionLink(art.Name, "Index", "Artist", new { id = art.Id }, null)</td>
                     <td>@art.Songs.Count</td>
                     <td>@art.ViewsCount</td>
                 </tr>

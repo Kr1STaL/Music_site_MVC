@@ -14,8 +14,7 @@ namespace Music_site_MVC.Controllers
         public ActionResult Index()
         {
             var artists = db.Artists.ToList();
-            ViewBag.Artists = artists;
-            return View();
+            return View(artists);
         }
 
         public ActionResult About()
@@ -28,7 +27,7 @@ namespace Music_site_MVC.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-            return View(db.Songs);
+            return View();
         }
     }
 }
