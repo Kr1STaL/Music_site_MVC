@@ -1,0 +1,19 @@
+﻿@model Music_site_MVC.Models.Song
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.SongName</h2>
+<div>
+    @Model.SongText
+</div>
+<div>
+    @foreach (Music_site_MVC.Models.Akord akord in Model.Akords)
+    {
+        <b>@akord.Name</b>
+        <br />
+        @akord.Image
+        <br />
+    }
+</div>

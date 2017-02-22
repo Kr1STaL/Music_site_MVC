@@ -8,4 +8,23 @@
 <div>
     @Model.Biography
 </div>
+<div>
+    <table class="table-striped">
+        <thead>
+            <tr>
+                <th>Song Name</th>
+                <th>Views</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Music_site_MVC.Models.Song song in Model.Songs)
+            {
+                <tr>
+                    <td>@Html.ActionLink(song.SongName, "Index", "Song", new { id = song.Id }, null)</td>
+                    <td>@song.ViewsCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
