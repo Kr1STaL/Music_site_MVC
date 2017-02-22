@@ -11,7 +11,7 @@ namespace Music_site_MVC.Models
         public string Name { get; set; }
         public string Image { get; set; }
 
-        public ICollection<Song> Songs { get; set; }
+        public virtual ICollection<Song> Songs { get; set; }
         public Akord()
         {
             Songs = new List<Song>();

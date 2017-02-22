@@ -13,7 +13,7 @@ namespace Music_site_MVC.Models
         public int ViewsCount { get; set; }
 
 
-        public ICollection<Song> Songs { get; set; }
+        public virtual ICollection<Song> Songs { get; set; }
         public Artist()
         {
             Songs = new List<Song>();

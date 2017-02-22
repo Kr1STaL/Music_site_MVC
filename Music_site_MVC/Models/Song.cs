@@ -13,9 +13,9 @@ namespace Music_site_MVC.Models
         public int ViewsCount { get; set; }
 
         public int ArtistId { get; set; }
-        public Artist Artist { get; set; }
+        public virtual Artist Artist { get; set; }
 
-        public ICollection<Akord> Akords { get; set; }
+        public virtual ICollection<Akord> Akords { get; set; }
         public Song()
         {
             Akords = new List<Akord>();

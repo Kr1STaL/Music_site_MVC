@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Music_site_MVC.Models;
 
 namespace Music_site_MVC.Controllers
 {
@@ -12,6 +13,8 @@ namespace Music_site_MVC.Controllers
 
         public ActionResult Index()
         {
+            var artists = db.Artists.ToList();
+            ViewBag.Artists = artists;
             return View();
         }
 
@@ -25,7 +28,7 @@ namespace Music_site_MVC.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
-            return View(db.Artists);
+            return View(db.Songs);
         }
     }
 }
