@@ -11,6 +11,7 @@ namespace Music_site_MVC.Database_EF
 {
     public class Parsing
     {
+        List<Akord> all_akords = new List<Akord>();
 
         public List<Artist> Parse_Artists()
         {
@@ -89,6 +90,7 @@ namespace Music_site_MVC.Database_EF
                 }
 
                 artists_list.Add(Set_Artist_songs(artist_songs_list, artist));
+                return artists_list;
             }
 
             return artists_list;
@@ -124,8 +126,6 @@ namespace Music_site_MVC.Database_EF
 
             foreach (string html_page in songs_pages)
             {
-                
-                Thread.Sleep(850);
 
                 try
                 {
@@ -147,22 +147,31 @@ namespace Music_site_MVC.Database_EF
 
                         foreach (HtmlNode note in akkords_node)
                         {
+                            Akord ak = new Akord();
                             Akord akkord = new Akord();
                             akkord.Name = note.Attributes["alt"].Value;
                             akkord.Image = note.Attributes["src"].Value.Insert(0, "http:");
-                            akkord_list.Add(akkord);
+                            if ((ak = all_akords.Find(x => x.Name == akkord.Name)) != default(Akord))
+                            {
+                                akkord_list.Add(ak);
+                            }
+                            else
+                            {
+                                akkord_list.Add(akkord);
+                                all_akords.Add(akkord);
+                            }
                         }
-
                         song.Akords = akkord_list;
                         artist_songs.Add(song);
                     }
                 }
                 catch (Exception)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(40000);
                     continue;
                 }
             }
+
             artist.Songs = artist_songs;
             return artist;
         }

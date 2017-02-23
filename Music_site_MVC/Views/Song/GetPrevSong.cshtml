@@ -1,0 +1,15 @@
+﻿@using Music_site_MVC.Models;
+@model Song
+
+<div id="currentSong">
+    <h3>@Model.SongName</h3>
+<pre>@Model.SongText</pre>
+    <hr />
+    @foreach (Akord akord in Model.Akords)
+    {
+        <b>@akord.Name</b>
+        <br />
+        @akord.Image
+        <br />
+    }
+</div>
