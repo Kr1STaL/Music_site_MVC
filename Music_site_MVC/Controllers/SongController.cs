@@ -15,24 +15,41 @@ namespace Music_site_MVC.Controllers
         public ActionResult Index(int id)
         {
             Song song_info = db.Songs.Find(id);
+            ViewBag.curSong = song_info;
             return View(song_info);
         }
 
-        public ActionResult GetPrevSong(int artist_id ,int song_id)
+        public PartialViewResult GetPrevSong(int artist_id ,int song_id)
         {
             Artist cur_artist = db.Artists.Find(artist_id);
             Song cur_song = db.Songs.Find(song_id);
-            int songs_count = cur_artist.Songs.Count;
-            int cur_position = cur_artist.Songs.ToList().IndexOf(cur_song);
-            if ((cur_position - 1) >= 0)
+            if (cur_song == null || cur_song.ArtistId != artist_id)
             {
-                Song song_info = cur_song.Artist.Songs.ElementAt(cur_position - 1);
+                Song song_info = cur_artist.Songs.Last();
+                ViewBag.curSong = song_info;
                 return PartialView(song_info);
             }
             else
             {
-                Song song_info = cur_song.Artist.Songs.Last();
+                ViewBag.curSong = cur_song;
+                return PartialView(cur_song);
+            }
+        }
+
+        public PartialViewResult GetNextSong(int artist_id, int song_id)
+        {
+            Artist cur_artist = db.Artists.Find(artist_id);
+            Song cur_song = db.Songs.Find(song_id);
+            if (cur_song == null || cur_song.ArtistId != artist_id)
+            {
+                Song song_info = cur_artist.Songs.First();
+                ViewBag.curSong = song_info;
                 return PartialView(song_info);
+            }
+            else
+            {
+                ViewBag.curSong = cur_song;
+                return PartialView(cur_song);
             }
         }
 

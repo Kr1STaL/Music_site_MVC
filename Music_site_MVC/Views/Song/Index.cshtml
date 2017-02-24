@@ -6,10 +6,31 @@
 }
 
 <div id="curSongData">
+    <h3>@Model.SongName</h3>
+<pre>@Model.SongText</pre>
+    <hr />
+    @foreach (Akord akord in Model.Akords)
+    {
+        <b>@akord.Name</b>
+        <br />
+        @akord.Image
+        <br />
+    }
     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        @Ajax.ActionLink("Лучшая книга", "GetPrevSong", new { artist_id = Model.ArtistId, song_id = Model.Id }, new AjaxOptions { UpdateTargetId = "curSongData" })
-    
-
-
-   
+    @Ajax.ActionLink("Prev", "GetPrevSong",
+    new { artist_id = Model.ArtistId, song_id = (ViewBag.curSong.Id - 1) },
+    new AjaxOptions { UpdateTargetId = "curSongData" })
+    @Ajax.ActionLink("Next", "GetNextSong",
+    new { artist_id = Model.ArtistId, song_id = (ViewBag.curSong.Id + 1) },
+    new AjaxOptions { UpdateTargetId = "curSongData" })
+    <span class="glyphicon-chevron-right" aria-hidden="true"></span>
 </div>
+<script>
+      function ChangeURL ()
+      {
+            var url = $(this).attr('http');
+            window.history.pushState(null, null, @ViewBag.curSong.Id);
+            return false;
+      };
+    ChangeURL();
+</script>
