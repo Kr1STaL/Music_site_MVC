@@ -1,5 +1,6 @@
 ﻿@using Music_site_MVC.Models;
 @model Song
+
 <div id="currentSong">
     <h3>@Model.SongName</h3>
 <pre>@Model.SongText</pre>
@@ -8,23 +9,24 @@
     {
         <b>@akord.Name</b>
         <br />
-        @akord.Image
+        <img src="@akord.Image" />
         <br />
     }
+    <input type="text" class="form-control" id="tokenfield" value="red,green,blue" />
     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
     @Ajax.ActionLink("Prev", "GetPrevSong",
-    new { artist_id = Model.ArtistId, song_id = (ViewBag.curSong.Id - 1) },
+    new { artist_id = Model.ArtistId, song_id = (Model.Id) },
     new AjaxOptions { UpdateTargetId = "curSongData" })
     @Ajax.ActionLink("Next", "GetNextSong",
-    new { artist_id = Model.ArtistId, song_id = (ViewBag.curSong.Id + 1) },
+    new { artist_id = Model.ArtistId, song_id = (Model.Id) },
     new AjaxOptions { UpdateTargetId = "curSongData" })
-    <span class="glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 </div>
 <script>
       function ChangeURL ()
       {
             var url = $(this).attr('http');
-            window.history.pushState(null, null, @ViewBag.curSong.Id);
+            window.history.pushState(null, null, @Model.Id);
             return false;
       };
     ChangeURL();

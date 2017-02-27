@@ -90,7 +90,6 @@ namespace Music_site_MVC.Database_EF
                 }
 
                 artists_list.Add(Set_Artist_songs(artist_songs_list, artist));
-                return artists_list;
             }
 
             return artists_list;

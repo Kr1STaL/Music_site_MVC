@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Music_site_MVC.Models;
+using PagedList.Mvc;
+using PagedList;
 
 namespace Music_site_MVC.Controllers
 {
@@ -11,23 +13,11 @@ namespace Music_site_MVC.Controllers
     {
         Music_MVC_Context db = new Music_MVC_Context();
 
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var artists = db.Artists.ToList();
-            return View(artists);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
+            int pageSize = 1;
+            int pageNumber = (page ?? 1);
+            return View(db.Artists.ToList().ToPagedList(pageNumber, pageSize));
         }
     }
 }

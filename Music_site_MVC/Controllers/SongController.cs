@@ -15,41 +15,36 @@ namespace Music_site_MVC.Controllers
         public ActionResult Index(int id)
         {
             Song song_info = db.Songs.Find(id);
-            ViewBag.curSong = song_info;
             return View(song_info);
         }
 
         public PartialViewResult GetPrevSong(int artist_id ,int song_id)
         {
             Artist cur_artist = db.Artists.Find(artist_id);
-            Song cur_song = db.Songs.Find(song_id);
-            if (cur_song == null || cur_song.ArtistId != artist_id)
+            if (cur_artist.Songs.First().Id != song_id)
             {
-                Song song_info = cur_artist.Songs.Last();
-                ViewBag.curSong = song_info;
-                return PartialView(song_info);
+                Song prev_song = db.Songs.Find(song_id - 1);
+                return PartialView(prev_song);
             }
             else
             {
-                ViewBag.curSong = cur_song;
-                return PartialView(cur_song);
+                Song prev_song = cur_artist.Songs.Last();
+                return PartialView(prev_song);
             }
         }
 
         public PartialViewResult GetNextSong(int artist_id, int song_id)
         {
             Artist cur_artist = db.Artists.Find(artist_id);
-            Song cur_song = db.Songs.Find(song_id);
-            if (cur_song == null || cur_song.ArtistId != artist_id)
+            if (cur_artist.Songs.Last().Id != song_id)
             {
-                Song song_info = cur_artist.Songs.First();
-                ViewBag.curSong = song_info;
-                return PartialView(song_info);
+                Song next_song = db.Songs.Find(song_id + 1);
+                return PartialView(next_song);
             }
             else
             {
-                ViewBag.curSong = cur_song;
-                return PartialView(cur_song);
+                Song next_song = cur_artist.Songs.First();
+                return PartialView(next_song);
             }
         }
 
