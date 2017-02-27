@@ -14,8 +14,8 @@
     <table class="table-striped">
         <thead>
             <tr>
-                <th>Song Name</th>
-                <th>Views</th>
+                <th>@Html.ActionLink("Song Name", "Index", new { page = Model.PageNumber, sortOrder = Request.QueryString["sortOrder"] == "Name desc" ? "Name" : "Name desc" })</th>
+                <th>@Html.ActionLink("Views", "Index", new { page = Model.PageNumber, sortOrder = Request.QueryString["sortOrder"] == "Views" ? "Views desc" : "Views" })</th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +31,8 @@
 </div>
 <br />
 Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = Request.QueryString["sortOrder"] }))
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+
 

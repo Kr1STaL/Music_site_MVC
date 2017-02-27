@@ -13,13 +13,29 @@ namespace Music_site_MVC.Controllers
         Music_MVC_Context db = new Music_MVC_Context();
 
         // GET: Artist
-        public ActionResult Index(int id, int? page)
+        public ActionResult Index(int id, int? page, string sortOrder)
         {
-            var artist_info = db.Artists.Find(id);
             int pageSize = 30;
             int pageNumber = (page ?? 1);
-            return View(artist_info.Songs.ToPagedList(pageNumber, pageSize));
-            //return View(artist_info);
+            var songs = from s in db.Songs
+                        where s.ArtistId == id
+                        select s;
+            switch (sortOrder)
+            {
+                case "Name desc":
+                    songs = songs.OrderByDescending(s => s.SongName);
+                    break;
+                case "Songs":
+                    songs = songs.OrderBy(s => s.ViewsCount);
+                    break;
+                case "Songs desc":
+                    songs = songs.OrderByDescending(s => s.ViewsCount);
+                    break;
+                default:
+                    songs = songs.OrderBy(s => s.SongName);
+                    break;
+            }
+            return View(songs.ToPagedList(pageNumber, pageSize));
         }
     }
 }
