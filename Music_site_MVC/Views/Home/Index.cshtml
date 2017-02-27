@@ -9,8 +9,8 @@
     <table class="table table-hover">
         <thead>
             <tr class="theme">
-                <th>Artist Name</th>
-                <th>Songs</th>
+                <th>@Html.ActionLink("Artist Name", "Index", new { page = Model.PageNumber, sortOrder = Request.QueryString["sortOrder"] == "Name desc" ? "Name" : "Name desc" })</th>
+                <th>@Html.ActionLink("Songs", "Index", new { page = Model.PageNumber, sortOrder = Request.QueryString["sortOrder"] == "Songs" ? "Songs desc" : "Songs" })</th>
                 <th>Views</th>
             </tr>
         </thead>
@@ -29,4 +29,4 @@
 <br />
 Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = Request.QueryString["sortOrder"]}))
