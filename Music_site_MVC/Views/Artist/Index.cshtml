@@ -1,12 +1,14 @@
-﻿@model Music_site_MVC.Models.Artist
+﻿@model PagedList.IPagedList<Music_site_MVC.Models.Song>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model.Name</h2>
+<h2>@Model.First().Artist.Name</h2>
 <div>
-    @Model.Biography
+    @Model.First().Artist.Biography
 </div>
 <div>
     <table class="table-striped">
@@ -17,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Music_site_MVC.Models.Song song in Model.Songs)
+            @foreach (Music_site_MVC.Models.Song song in Model)
             {
                 <tr>
                     <td>@Html.ActionLink(song.SongName, "Index", "Song", new { id = song.Id }, null)</td>
@@ -27,4 +29,8 @@
         </tbody>
     </table>
 </div>
+<br />
+Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
