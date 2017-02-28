@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList.Mvc;
 using PagedList;
+using System.Web.UI;
 
 namespace Music_site_MVC.Controllers
 {
@@ -12,14 +13,11 @@ namespace Music_site_MVC.Controllers
     {
         Music_MVC_Context db = new Music_MVC_Context();
 
-        // GET: Artist
         public ActionResult Index(int id, int? page, string sortOrder)
         {
             int pageSize = 30;
             int pageNumber = (page ?? 1);
-            var songs = from s in db.Songs
-                        where s.ArtistId == id
-                        select s;
+            var songs = db.Songs.Where(p => p.ArtistId == id);
             switch (sortOrder)
             {
                 case "Name desc":

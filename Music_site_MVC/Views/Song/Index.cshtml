@@ -7,7 +7,14 @@
 
 <div id="curSongData">
     <h3>@Model.SongName</h3>
-<pre>@Model.SongText</pre>
+    <pre id="pre_text">@Model.SongText</pre>
+    <input type="button" name="Change" value="Change" id="button_change" onclick="Change_text()" />
+    <form id="Change_song_form" hidden method="post" action="/Song/ChangeSong">
+        <input type="hidden" value="@Model.Id" name="SongId" />
+        <textarea id="text_to_change" cols="45" rows="70" name="SongText">@Model.SongText</textarea>
+        <input type="submit" value="Save" />
+    </form>
+    <input hidden type="button" name="Cancel" value="Cancel" id="button_cancel" onclick="Cancel_changing()" />
     <hr />
     @foreach (Akord akord in Model.Akords)
     {
@@ -26,3 +33,34 @@
     new AjaxOptions { UpdateTargetId = "curSongData" })
     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 </div>
+<script>
+    function Change_text()
+    {
+        var Original_text = document.getElementById("pre_text");
+        var Button_change = document.getElementById("button_change");
+
+        var Change_form = document.getElementById("Change_song_form");
+        var Button_cancel = document.getElementById("button_cancel");
+
+        Original_text.hidden = true;
+        Button_change.hidden = true;
+
+        Change_form.hidden = false;
+        Button_cancel.hidden = false;
+    }
+    function Cancel_changing()
+    {
+        var Original_text = document.getElementById("pre_text");
+        var Button_change = document.getElementById("button_change");
+
+        var Change_form = document.getElementById("Change_song_form");
+        var Button_cancel = document.getElementById("button_cancel");
+
+        Original_text.hidden = false;
+        Button_change.hidden = false;
+
+        Change_form.hidden = true;
+        Button_cancel.hidden = true;
+    }
+    $('.tokenfield').tokenfield()
+</script>

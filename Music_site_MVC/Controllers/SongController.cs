@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Music_site_MVC.Models;
+using System.Data.Entity;
 
 namespace Music_site_MVC.Controllers
 {
@@ -11,13 +12,14 @@ namespace Music_site_MVC.Controllers
     {
         Music_MVC_Context db = new Music_MVC_Context();
 
-        // GET: Song
+        [HttpGet]
         public ActionResult Index(int id)
         {
             Song song_info = db.Songs.Find(id);
             return View(song_info);
         }
 
+        [HttpGet]
         public PartialViewResult GetPrevSong(int artist_id ,int song_id)
         {
             Artist cur_artist = db.Artists.Find(artist_id);
@@ -33,6 +35,7 @@ namespace Music_site_MVC.Controllers
             }
         }
 
+        [HttpGet]
         public PartialViewResult GetNextSong(int artist_id, int song_id)
         {
             Artist cur_artist = db.Artists.Find(artist_id);
@@ -45,6 +48,23 @@ namespace Music_site_MVC.Controllers
             {
                 Song next_song = cur_artist.Songs.First();
                 return PartialView(next_song);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ChangeSong(int SongId, string SongText)
+        {
+            Song modif_song = db.Songs.Find(SongId);
+            if (modif_song.SongText != SongText)
+            {
+                modif_song.SongText = SongText;
+                db.Entry(modif_song).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index/" + SongId);
+            }
+            else
+            {
+                return RedirectToAction("Index/" + SongId);
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using Music_site_MVC.Models;
 using PagedList.Mvc;
 using PagedList;
@@ -17,8 +18,7 @@ namespace Music_site_MVC.Controllers
         {
             int pageSize = 2;
             int pageNumber = (page ?? 1);
-            var artists = from s in db.Artists
-                           select s;
+            var artists = db.Artists.Select(ar => ar);
             switch (sortOrder)
             {
                 case "Name desc":
@@ -34,7 +34,20 @@ namespace Music_site_MVC.Controllers
                     artists = artists.OrderBy(s => s.Name);
                     break;
             }
-            return View(artists.ToList().ToPagedList(pageNumber, pageSize));
+            return View(artists.ToPagedList(pageNumber, pageSize));
+        }
+
+        public List<Artist> FiltrA(List<Artist> artists)
+        {
+            List<Artist> filtered_artists = new List<Artist>();
+            foreach (var item in artists)
+            {
+                if (item.Name.ToLower()[0] == 'а')
+                {
+                    filtered_artists.Add(item);
+                }
+            }
+            return filtered_artists;
         }
     }
 }

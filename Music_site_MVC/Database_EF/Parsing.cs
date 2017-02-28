@@ -60,6 +60,7 @@ namespace Music_site_MVC.Database_EF
 
             foreach (string html_page in artist_pages)
             {
+                Thread.Sleep(5000);
                 string str = web.DownloadString(html_page);
                 HtmlDocument doc = new HtmlDocument();
 
@@ -90,6 +91,7 @@ namespace Music_site_MVC.Database_EF
                 }
 
                 artists_list.Add(Set_Artist_songs(artist_songs_list, artist));
+                return artists_list;
             }
 
             return artists_list;
@@ -99,7 +101,7 @@ namespace Music_site_MVC.Database_EF
         {
             System.Net.WebClient web = new System.Net.WebClient();
             web.Encoding = Encoding.UTF8;
-
+            Thread.Sleep(5000);
             string str = web.DownloadString(biography_page);
             HtmlDocument doc = new HtmlDocument();
 
@@ -125,7 +127,7 @@ namespace Music_site_MVC.Database_EF
 
             foreach (string html_page in songs_pages)
             {
-
+                again:
                 try
                 {
                     string str = web.DownloadString(html_page);
@@ -167,7 +169,7 @@ namespace Music_site_MVC.Database_EF
                 catch (Exception)
                 {
                     Thread.Sleep(40000);
-                    continue;
+                    goto again;
                 }
             }
 
