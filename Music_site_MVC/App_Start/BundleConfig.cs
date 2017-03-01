@@ -25,6 +25,8 @@ namespace Music_site_MVC
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-tokenfield.css",
+                      "~/Content/tokenfield-typeahead.css",
                       "~/Content/site.css"));
         }
     }

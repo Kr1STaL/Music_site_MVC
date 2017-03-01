@@ -60,7 +60,6 @@ namespace Music_site_MVC.Database_EF
 
             foreach (string html_page in artist_pages)
             {
-                Thread.Sleep(5000);
                 string str = web.DownloadString(html_page);
                 HtmlDocument doc = new HtmlDocument();
 
@@ -101,7 +100,6 @@ namespace Music_site_MVC.Database_EF
         {
             System.Net.WebClient web = new System.Net.WebClient();
             web.Encoding = Encoding.UTF8;
-            Thread.Sleep(5000);
             string str = web.DownloadString(biography_page);
             HtmlDocument doc = new HtmlDocument();
 
@@ -166,14 +164,22 @@ namespace Music_site_MVC.Database_EF
                         artist_songs.Add(song);
                     }
                 }
-                catch (Exception)
+                catch (Exception error)
                 {
-                    Thread.Sleep(40000);
-                    goto again;
+                    if (error.Message == "The remote server returned an error: (404) Not Found.")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        Thread.Sleep(40000);
+                        goto again;
+                    }
                 }
             }
 
             artist.Songs = artist_songs;
+            //Thread.Sleep(40000);
             return artist;
         }
     }

@@ -10,7 +10,7 @@
     <pre id="pre_text">@Model.SongText</pre>
     <input type="button" name="Change" value="Change" id="button_change" onclick="Change_text()" />
     <form id="Change_song_form" hidden method="post" action="/Song/ChangeSong">
-        <input type="hidden" value="@Model.Id" name="SongId" />
+        <input id="hidenSongId" type="hidden" value="@Model.Id" name="SongId" />
         <textarea id="text_to_change" cols="45" rows="70" name="SongText">@Model.SongText</textarea>
         <input type="submit" value="Save" />
     </form>
@@ -20,10 +20,10 @@
     {
         <b>@akord.Name</b>
         <br />
-        <img src="@akord.Image" />
+        <img alt="@akord.Name" src="@akord.Image" />
         <br />
     }
-    <input type="text" class="form-control" id="tokenfield" value="red,green,blue" />
+    <input type="text" class="form-control" id="tokenfield" />
     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
     @Ajax.ActionLink("Prev", "GetPrevSong",
     new { artist_id = Model.ArtistId, song_id = (Model.Id) },
@@ -34,6 +34,50 @@
     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 </div>
 <script>
+    function Add_new_token(TokenName)
+    {
+        var images = document.getElementsByTagName('img');
+        var flag = 0;
+        for (var i = 0; i < images.length; ++i)
+        {
+            if (images[i].alt == TokenName)
+            {
+                flag += 1;
+            }
+        }
+        if (flag == 0)
+        {
+            var SongId = document.getElementById("hidenSongId").value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('POST', '/Song/AddAkord', true);
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send("Akord_Name=" + encodeURIComponent(TokenName) + "&SongId=" + encodeURIComponent(SongId));
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4)
+                {
+                    location.reload();
+                }
+            };
+        }
+        else
+        {
+            return;
+        }
+    }
+    function Delete_token(TokenName)
+    {
+            var SongId = document.getElementById("hidenSongId").value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('POST', '/Song/DeleteAkord', true);
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send("Akord_Name=" + encodeURIComponent(TokenName) + "&SongId=" + encodeURIComponent(SongId));
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    location.reload();
+                }
+            };
+    }
     function Change_text()
     {
         var Original_text = document.getElementById("pre_text");
@@ -62,5 +106,26 @@
         Change_form.hidden = true;
         Button_cancel.hidden = true;
     }
-    $('.tokenfield').tokenfield()
+
+    $('#tokenfield')
+        .on('tokenfield:initialize', function (e)
+        {
+            var images = document.getElementsByTagName('img');
+            var arr = new Array();
+            for (var i = 0; i < images.length; ++i)
+            {
+                $('#tokenfield').tokenfield('createToken', images[i].alt);
+            }
+        })
+    .on('tokenfield:createdtoken', function (e)
+    {
+        Add_new_token(e.attrs.value);
+    })
+
+   .on('tokenfield:removedtoken', function (e)
+   {
+       Delete_token(e.attrs.value);
+   })
+
+   .tokenfield()
 </script>

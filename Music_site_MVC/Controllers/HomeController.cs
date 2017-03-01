@@ -7,6 +7,7 @@ using System.Web.UI;
 using Music_site_MVC.Models;
 using PagedList.Mvc;
 using PagedList;
+using Music_site_MVC.Database_EF;
 
 namespace Music_site_MVC.Controllers
 {

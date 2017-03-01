@@ -172,7 +172,8 @@
     <Compile Include="Controllers\ArtistController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SongController.cs" />
-    <Compile Include="Database_EF\Memory_Cache.cs" />
+    <Compile Include="Database_EF\Artist_Memory_Cache.cs" />
+    <Compile Include="Database_EF\Song_Memory_Cache.cs" />
     <Compile Include="Database_EF\Parsing.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -186,8 +187,8 @@
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap-tokenfield\bootstrap-tokenfield.css" />
-    <Content Include="Content\bootstrap-tokenfield\tokenfield-typeahead.css" />
+    <Content Include="Content\bootstrap-tokenfield.css" />
+    <Content Include="Content\tokenfield-typeahead.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PagedList.css" />
@@ -212,8 +213,8 @@
     <Content Include="Scripts\bootstrap-tokenfield.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Content\bootstrap-tokenfield\tokenfield-typeahead.less" />
-    <Content Include="Content\bootstrap-tokenfield\bootstrap-tokenfield.less" />
+    <Content Include="Content\tokenfield-typeahead.less" />
+    <Content Include="Content\bootstrap-tokenfield.less" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -251,6 +252,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\bootstrap-tokenfield\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
