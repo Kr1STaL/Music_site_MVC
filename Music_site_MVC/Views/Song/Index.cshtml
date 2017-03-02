@@ -7,31 +7,39 @@
 
 <div id="curSongData">
     <h3>@Model.SongName</h3>
-    <pre id="pre_text">@Model.SongText</pre>
-    <input type="button" name="Change" value="Change" id="button_change" onclick="Change_text()" />
-    <form id="Change_song_form" hidden method="post" action="/Song/ChangeSong">
-        <input id="hidenSongId" type="hidden" value="@Model.Id" name="SongId" />
-        <textarea id="text_to_change" cols="45" rows="70" name="SongText">@Model.SongText</textarea>
-        <input type="submit" value="Save" />
-    </form>
-    <input hidden type="button" name="Cancel" value="Cancel" id="button_cancel" onclick="Cancel_changing()" />
-    <hr />
-    @foreach (Akord akord in Model.Akords)
-    {
-        <b>@akord.Name</b>
+    <div style="float:left">
+        <pre id="pre_text">@Model.SongText</pre>
+        <input class="button1" type="button" name="Change" value="Change" id="button_change" onclick="Change_text()" />
+        <form id="Change_song_form" hidden method="post" action="/Song/ChangeSong">
+            <input id="hidenSongId" type="hidden" value="@Model.Id" name="SongId" />
+            <textarea id="text_to_change" cols="45" rows="50" name="SongText">@Model.SongText</textarea>
+            <input class="button1" type="submit" value="Save" />
+        </form>
         <br />
-        <img alt="@akord.Name" src="@akord.Image" />
-        <br />
-    }
-    <input type="text" class="form-control" id="tokenfield" />
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    @Ajax.ActionLink("Prev", "GetPrevSong",
+        <input class="button1" hidden type="button" name="Cancel" value="Cancel" id="button_cancel" onclick="Cancel_changing()" />
+    </div>
+    <div style="float:right">
+            @foreach (Akord akord in Model.Akords)
+            {
+                <div style="display:inline-block">
+                    <b>@akord.Name</b>
+                    <br />
+                    <img alt="@akord.Name" src="@akord.Image" />
+                    <br />
+                </div>
+            }
+        <input type="text" class="form-control" id="tokenfield" />
+    </div>
+    <div class="s11" style="clear:both">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        @Ajax.ActionLink("Prev", "GetPrevSong",
     new { artist_id = Model.ArtistId, song_id = (Model.Id) },
     new AjaxOptions { UpdateTargetId = "curSongData" })
-    @Ajax.ActionLink("Next", "GetNextSong",
+        @Ajax.ActionLink("Next", "GetNextSong",
     new { artist_id = Model.ArtistId, song_id = (Model.Id) },
     new AjaxOptions { UpdateTargetId = "curSongData" })
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </div>
 </div>
 <script>
     function Add_new_token(TokenName)

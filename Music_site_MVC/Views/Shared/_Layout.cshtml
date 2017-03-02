@@ -31,10 +31,12 @@
     </nav>
 
     <div class="container body-content">
+        @Html.MvcSiteMap().SiteMapPath()
+        <br />
         @RenderBody()
-        <hr />
+        <br />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - E.Shkelev ASP.NET MVC</p>
         </footer>
     </div>
 

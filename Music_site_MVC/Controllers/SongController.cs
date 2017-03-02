@@ -7,6 +7,7 @@ using Music_site_MVC.Models;
 using System.Data.Entity;
 using Music_site_MVC.Database_EF;
 using System.Net;
+using MvcSiteMapProvider;
 
 namespace Music_site_MVC.Controllers
 {
@@ -45,7 +46,6 @@ namespace Music_site_MVC.Controllers
         [HttpGet]
         public PartialViewResult GetPrevSong(int artist_id ,int song_id)
         {
-
             Artist cur_artist = artist_cache.GetValue(artist_id);
             if (cur_artist == null)
             {
@@ -106,6 +106,7 @@ namespace Music_site_MVC.Controllers
             }
             if (modif_song.SongText != SongText)
             {
+                modif_song = db.Songs.Find(SongId);
                 modif_song.SongText = SongText;
                 db.Entry(modif_song).State = EntityState.Modified;
                 db.SaveChanges();

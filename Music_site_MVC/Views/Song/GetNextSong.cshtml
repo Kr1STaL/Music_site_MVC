@@ -1,35 +1,87 @@
 ﻿@using Music_site_MVC.Models;
 @model Song
-
+@Scripts.Render("~/scripts/bootstrap-tokenfield.js")
 <div id="currentSong">
     <h3>@Model.SongName</h3>
-    <pre id="pre_text">@Model.SongText</pre>
-    <input type="button" name="Change" value="Change" id="button_change" onclick="Change_text()" />
-    <form id="Change_song_form" hidden method="post" action="/Song/ChangeSong">
-        <input type="hidden" value="@Model.Id" name="SongId" />
-        <textarea id="text_to_change" cols="45" rows="70" name="SongText">@Model.SongText</textarea>
-        <input type="submit" value="Save" />
-    </form>
-    <input hidden type="button" name="Cancel" value="Cancel" id="button_cancel" onclick="Cancel_changing()" />
-    <hr />
-    @foreach (Akord akord in Model.Akords)
-    {
-        <b>@akord.Name</b>
+    <div style="float:left">
+        <pre id="pre_text">@Model.SongText</pre>
+        <input class="button1" type="button" name="Change" value="Change" id="button_change" onclick="Change_text()" />
+        <form id="Change_song_form" hidden method="post" action="/Song/ChangeSong">
+            <input id="hidenSongId" type="hidden" value="@Model.Id" name="SongId" />
+            <textarea id="text_to_change" cols="45" rows="50" name="SongText">@Model.SongText</textarea>
+            <input class="button1" type="submit" value="Save" />
+        </form>
         <br />
-        <img src="@akord.Image" />
-        <br />
-    }
-    <input type="text" class="form-control" id="tokenfield" value="red,green,blue" />
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    @Ajax.ActionLink("Prev", "GetPrevSong",
+        <input class="button1" hidden type="button" name="Cancel" value="Cancel" id="button_cancel" onclick="Cancel_changing()" />
+    </div>
+    <div style="float:right">
+            @foreach (Akord akord in Model.Akords)
+            {
+                <div style="display:inline-block">
+                    <b>@akord.Name</b>
+                    <br />
+                    <img alt="@akord.Name" src="@akord.Image" />
+                    <br />
+                </div>
+            }
+        <input type="text" class="form-control" id="tokenfield" />
+    </div>
+    <div class="s11" style="clear:both">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        @Ajax.ActionLink("Prev", "GetPrevSong",
     new { artist_id = Model.ArtistId, song_id = (Model.Id) },
-    new AjaxOptions { UpdateTargetId = "curSongData" })
-    @Ajax.ActionLink("Next", "GetNextSong",
+    new AjaxOptions { UpdateTargetId = "currentSong" })
+        @Ajax.ActionLink("Next", "GetNextSong",
     new { artist_id = Model.ArtistId, song_id = (Model.Id) },
-    new AjaxOptions { UpdateTargetId = "curSongData" })
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    new AjaxOptions { UpdateTargetId = "currentSong" })
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    </div>
 </div>
 <script>
+    function Add_new_token(TokenName)
+    {
+        var images = document.getElementsByTagName('img');
+        var flag = 0;
+        for (var i = 0; i < images.length; ++i)
+        {
+            if (images[i].alt == TokenName)
+            {
+                flag += 1;
+            }
+        }
+        if (flag == 0)
+        {
+            var SongId = document.getElementById("hidenSongId").value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('POST', '/Song/AddAkord', true);
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.send("Akord_Name=" + encodeURIComponent(TokenName) + "&SongId=" + encodeURIComponent(SongId));
+            xmlhttp.onreadystatechange = function ()
+            {
+                if (xmlhttp.readyState == 4)
+                {
+                    location.reload();
+                }
+            };
+        }
+        else
+        {
+            return;
+        }
+    }
+    function Delete_token(TokenName)
+    {
+        var SongId = document.getElementById("hidenSongId").value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open('POST', '/Song/DeleteAkord', true);
+        xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xmlhttp.send("Akord_Name=" + encodeURIComponent(TokenName) + "&SongId=" + encodeURIComponent(SongId));
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                location.reload();
+            }
+        };
+    }
     function Change_text()
     {
         var Original_text = document.getElementById("pre_text");
@@ -63,6 +115,27 @@
             var url = $(this).attr('http');
             window.history.pushState(null, null, @Model.Id);
             return false;
-      };
-    ChangeURL();
+      }
+    ChangeURL()
+    $('#tokenfield')
+       .on('tokenfield:initialize', function (e)
+       {
+           var images = document.getElementsByTagName('img');
+           var arr = new Array();
+           for (var i = 0; i < images.length; ++i)
+           {
+               $('#tokenfield').tokenfield('createToken', images[i].alt);
+           }
+       })
+   .on('tokenfield:createdtoken', function (e)
+   {
+       Add_new_token(e.attrs.value);
+   })
+
+  .on('tokenfield:removedtoken', function (e)
+  {
+      Delete_token(e.attrs.value);
+  })
+
+  .tokenfield()
 </script>

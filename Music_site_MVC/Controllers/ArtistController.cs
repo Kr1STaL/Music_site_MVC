@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using PagedList.Mvc;
 using PagedList;
 using System.Web.UI;
+using System.Net;
+using MvcSiteMapProvider;
 
 namespace Music_site_MVC.Controllers
 {
@@ -13,8 +15,13 @@ namespace Music_site_MVC.Controllers
     {
         Music_MVC_Context db = new Music_MVC_Context();
 
-        public ActionResult Index(int id, int? page, string sortOrder)
+        [HttpGet]
+        public ActionResult Index(int? id, int? page, string sortOrder)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             int pageSize = 30;
             int pageNumber = (page ?? 1);
             var songs = db.Songs.Where(p => p.ArtistId == id);

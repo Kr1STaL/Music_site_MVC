@@ -8,6 +8,7 @@ using Music_site_MVC.Models;
 using PagedList.Mvc;
 using PagedList;
 using Music_site_MVC.Database_EF;
+using MvcSiteMapProvider;
 
 namespace Music_site_MVC.Controllers
 {
@@ -15,9 +16,10 @@ namespace Music_site_MVC.Controllers
     {
         Music_MVC_Context db = new Music_MVC_Context();
 
+        [HttpGet]
         public ActionResult Index(int? page, string sortOrder)
         {
-            int pageSize = 2;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             var artists = db.Artists.Select(ar => ar);
             switch (sortOrder)

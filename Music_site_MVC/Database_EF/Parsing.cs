@@ -11,21 +11,33 @@ namespace Music_site_MVC.Database_EF
 {
     public class Parsing
     {
+        Music_MVC_Context db = new Music_MVC_Context();
         List<Akord> all_akords = new List<Akord>();
 
         public List<Artist> Parse_Artists()
         {
+            List<Akord> vot = db.Akords.ToList();
+            all_akords = vot;
             List<string> Top_pages = new List<string>();
             List<string> Artist_pages = new List<string>();
-            for (int i = 1; i <= 10; i++)
+            for (int i = 5; i <= 10; i++)
             {
                 Top_pages.Add("http://amdm.ru/chords/page" + i + "/");
-                foreach (var item in Get_Artist_List(Top_pages[i - 1]))
+                foreach (var item in Get_Artist_List(Top_pages[i - 5]))
                 {
                     Artist_pages.Add(item);
                 }
             }
             return Get_Artist_Biograpy(Artist_pages);
+        }
+
+        public void InitBaze(List<Artist> artists)
+        {
+            foreach (var item in artists)
+            {
+                db.Artists.Add(item);
+            }
+            db.SaveChanges();
         }
 
         public List<string> Get_Artist_List(string html_page)

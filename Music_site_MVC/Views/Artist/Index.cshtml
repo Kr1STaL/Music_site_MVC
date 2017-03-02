@@ -8,9 +8,12 @@
 
 <h2>@Model.First().Artist.Name</h2>
 <div>
-    @Model.First().Artist.Biography
+    <pre>@Model.First().Artist.Biography</pre>
 </div>
 <div>
+    <br />
+    <h3> Подборы аккордов</h3>
+    <br />
     <table class="table-striped">
         <thead>
             <tr>
@@ -18,7 +21,7 @@
                 <th>@Html.ActionLink("Views", "Index", new { page = Model.PageNumber, sortOrder = Request.QueryString["sortOrder"] == "Views" ? "Views desc" : "Views" })</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="s2">
             @foreach (Music_site_MVC.Models.Song song in Model)
             {
                 <tr>
